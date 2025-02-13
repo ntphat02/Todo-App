@@ -23,9 +23,11 @@ taskList.onclick = function (e) {
     task.title = newtitle;
     render();
   } else if (e.target.closest(".done")) {
-    console.log("Mark as done");
+    task.completed = !task.completed;
+    render();
   } else if (e.target.closest(".delete")) {
-    console.log("Delete");
+    tasks.splice(taskIndex, 1);
+    render();
   }
 };
 
