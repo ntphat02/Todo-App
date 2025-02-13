@@ -14,18 +14,27 @@ taskList.onclick = function (e) {
   const task = tasks[taskIndex];
 
   if (e.target.closest(".edit")) {
-    let newtitle = prompt("Nhập tên công việc", task.title);
+    let newTitle = prompt("Nhập tên công việc", task.title);
 
-    if (newtitle.trim() === "") {
-      alert("Không được để trống");
-      newtitle = prompt("Nhập tên công việc", task.title);
+    if (newTitle === null) {
+      return;
     }
-    task.title = newtitle;
+    newTitle = newTitle.trim();
+    if (!newTitle) {
+      alert("Không được để trống");
+      return;
+    }
+
+    task.title = newTitle;
     render();
-  } else if (e.target.closest(".done")) {
+    return;
+  }
+  if (e.target.closest(".done")) {
     task.completed = !task.completed;
     render();
-  } else if (e.target.closest(".delete")) {
+    return;
+  }
+  if (e.target.closest(".delete")) {
     tasks.splice(taskIndex, 1);
     render();
   }
