@@ -4,9 +4,30 @@ const tasks = [
     completed: false,
   },
 ];
-const taskList = document.querySelector(".task-list");
+const taskList = document.querySelector("#task-list");
 const frm = document.querySelector("#todo-form");
 const input = document.querySelector("#todo-input");
+
+taskList.onclick = function (e) {
+  const taskItem = e.target.closest(".task-item");
+  const taskIndex = +taskItem.getAttribute("task-index");
+  const task = tasks[taskIndex];
+
+  if (e.target.closest(".edit")) {
+    let newtitle = prompt("Nhập tên công việc", task.title);
+
+    if (newtitle.trim() === "") {
+      alert("Không được để trống");
+      newtitle = prompt("Nhập tên công việc", task.title);
+    }
+    task.title = newtitle;
+    render();
+  } else if (e.target.closest(".done")) {
+    console.log("Mark as done");
+  } else if (e.target.closest(".delete")) {
+    console.log("Delete");
+  }
+};
 
 frm.onsubmit = function (e) {
   e.preventDefault();
@@ -29,7 +50,9 @@ frm.onsubmit = function (e) {
 function render() {
   const html = tasks
     .map(
-      (task) => ` <li class="task-item ${task.completed ? "completed" : ""}">
+      (task, index) => ` <li class="task-item ${
+        task.completed ? "completed" : ""
+      }" task-index="${index}">
           <span class="task-title">${task.title}</span>
           <div class="task-action">
             <button class="task-btn edit">Edit</button>
