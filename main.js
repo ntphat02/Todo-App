@@ -8,6 +8,15 @@ const taskList = document.querySelector("#task-list");
 const frm = document.querySelector("#todo-form");
 const input = document.querySelector("#todo-input");
 
+function isDuplicateTask(newTitle, excludeIndex = -1) {
+  const isDuplicate = tasks.some(
+    (task, index) =>
+      task.title.toUpperCase() === newTitle.toUpperCase() &&
+      excludeIndex !== index
+  );
+  return isDuplicate;
+}
+
 taskList.onclick = function (e) {
   const taskItem = e.target.closest(".task-item");
   const taskIndex = +taskItem.getAttribute("task-index");
@@ -25,12 +34,7 @@ taskList.onclick = function (e) {
       return;
     }
 
-    const isDuplicate = tasks.some(
-      (task, index) =>
-        task.title.toUpperCase() === newTitle.toUpperCase() &&
-        taskIndex !== index
-    );
-    if (isDuplicate) {
+    if (isDuplicateTask(newTitle, taskIndex)) {
       alert("Công việc đã bị trùng!");
       return;
     }
@@ -59,11 +63,11 @@ frm.onsubmit = function (e) {
     return;
   }
 
-  const isDuplicate = tasks.some(
-    (task) => task.title.toUpperCase() === value.toUpperCase()
-  );
+  // const isDuplicate = tasks.some(
+  //   (task) => task.title.toUpperCase() === value.toUpperCase()
+  // );
 
-  if (isDuplicate) {
+  if (isDuplicateTask(value)) {
     alert("Công việc đã bị trùng!");
     return;
   }
