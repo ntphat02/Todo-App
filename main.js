@@ -1,4 +1,4 @@
-const tasks = [];
+const tasks = JSON.parse(localStorage.getItem("tasks")) ?? []; // Nếu về trái null thì trả về vế phải , (mặc định trả về vế trái)
 const taskList = document.querySelector("#task-list");
 const frm = document.querySelector("#todo-form");
 const input = document.querySelector("#todo-input");
@@ -10,6 +10,10 @@ function isDuplicateTask(newTitle, excludeIndex = -1) {
       excludeIndex !== index
   );
   return isDuplicate;
+}
+
+function saveTasks() {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
 taskList.onclick = function (e) {
@@ -36,16 +40,19 @@ taskList.onclick = function (e) {
 
     task.title = newTitle;
     render();
+    saveTasks();
     return;
   }
   if (e.target.closest(".done")) {
     task.completed = !task.completed;
     render();
+    saveTasks();
     return;
   }
   if (e.target.closest(".delete")) {
     tasks.splice(taskIndex, 1);
     render();
+    saveTasks();
   }
 };
 
@@ -74,6 +81,7 @@ frm.onsubmit = function (e) {
   tasks.push(newTask);
   input.value = "";
   render();
+  saveTasks();
 };
 
 function render() {
@@ -81,6 +89,7 @@ function render() {
     taskList.innerHTML = '<li class="empty-message">No task available</li>';
     return;
   }
+
   const html = tasks
     .map(
       (task, index) => ` <li class="task-item ${
