@@ -25,6 +25,16 @@ taskList.onclick = function (e) {
       return;
     }
 
+    const isDuplicate = tasks.some(
+      (task, index) =>
+        task.title.toUpperCase() === newTitle.toUpperCase() &&
+        taskIndex !== index
+    );
+    if (isDuplicate) {
+      alert("Công việc đã bị trùng!");
+      return;
+    }
+
     task.title = newTitle;
     render();
     return;
@@ -43,11 +53,20 @@ taskList.onclick = function (e) {
 frm.onsubmit = function (e) {
   e.preventDefault();
   const value = input.value.trim();
+
   if (!value) {
     alert("Nhập gì đó đi ^^");
     return;
   }
 
+  const isDuplicate = tasks.some(
+    (task) => task.title.toUpperCase() === value.toUpperCase()
+  );
+
+  if (isDuplicate) {
+    alert("Công việc đã bị trùng!");
+    return;
+  }
   const newTask = {
     title: value,
     completed: false,
