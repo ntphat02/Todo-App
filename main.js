@@ -1,9 +1,4 @@
-const tasks = [
-  {
-    title: "Tên công việc",
-    completed: false,
-  },
-];
+const tasks = [];
 const taskList = document.querySelector("#task-list");
 const frm = document.querySelector("#todo-form");
 const input = document.querySelector("#todo-input");
@@ -82,6 +77,10 @@ frm.onsubmit = function (e) {
 };
 
 function render() {
+  if (!tasks.length) {
+    taskList.innerHTML = '<li class="empty-message">No task available</li>';
+    return;
+  }
   const html = tasks
     .map(
       (task, index) => ` <li class="task-item ${
